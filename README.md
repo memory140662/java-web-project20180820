@@ -1,1 +1,1 @@
-[🔗JSP](https://github.com/memory140662/java-web-project20180820/blob/master/WebContent/WEB-INF/index.jsp)
+[🔗JSP](https://github.com/memory140662/java-web-project20180820/blob/without-jquery/WebContent/WEB-INF/index.jsp)
