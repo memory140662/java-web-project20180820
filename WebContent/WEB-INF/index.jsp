@@ -11,32 +11,37 @@
 <title></title>
 </head>
 <body>
-	<table border="1" id="table">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>Name</th>
-				<th>Description</th>
-				<th colspan="2">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${items}" var="item" varStatus="vs">
+	<form action="<%= request.getContextPath() %>/" method="POST">
+		<table border="1" id="table">
+			<thead>
 				<tr>
-					<td>${vs.index + 1}</td>
-					<td>${item.name}</td>
-					<td>${item.description}</td>
-					<td></td>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Description</th>
+					<th colspan="2">Actions</th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach items="${items}" var="item" varStatus="vs">
+					<tr>
+						<td>${vs.index + 1}</td>
+						<td>${item.name}</td>
+						<td>${item.description}</td>
+						<td></td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+		<input type="hidden" name="items">	
+	</form>
+	<button type="button" onclick="submit()">Submit</button>
+	
 </body>
 <script type="text/javascript">
 	window.onload = function() {
 		var tbody = document.querySelector('#table > tbody')
 		var items = getData()
-		// var total = +'<%= ((Collection<Item>) request.getAttribute("items")).size() %>'
+		
 		var total = +'${fn:length(items)}'
 		items.forEach(function(item, index) {
 			var idx = total + index + 1
@@ -91,6 +96,16 @@
 			name : 'Bee',
 			description : '＠＠你好！',
 		}, ])
+	}
+	
+	function submit() {
+		var origItems = ${jsonItems}
+		var newItems = [{id: 5, name: '123'}]
+		var nodes = document.querySelectorAll('#table > tbody > tr')
+		var $items = document.querySelector('input[name=items]')
+		var $form = document.querySelector('form')
+		$items.setAttribute('value', JSON.stringify(origItems.concat(newItems)))
+		$form.submit()
 	}
 </script>
 </html>
