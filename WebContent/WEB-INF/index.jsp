@@ -8,8 +8,6 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
-<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
 <title></title>
 </head>
 <body>
@@ -35,8 +33,8 @@
 	</table>
 </body>
 <script type="text/javascript">
-	$(document).ready(function() {
-		var $tbody = $("#table > tbody")
+	window.onload = function() {
+		var tbody = document.querySelector('#table > tbody')
 		var items = getData()
 		// var total = +'<%= ((Collection<Item>) request.getAttribute("items")).size() %>'
 		var total = +'${fn:length(items)}'
@@ -52,14 +50,21 @@
 			
 			deleteButton.append('Delete')
 			deleteButton.onclick = function () {
-				$tbody.children('#' + rowId).remove()
-				$tbody.children().each(function() {
-					var $td = $(this).children('td:first-child')
-					var id = +($td.text() || 0)
-					if (id > idx) {
-						$td.text(id - 1)
+				var tempNode = null
+				var index = null
+				for (var i = 0; i < tbody.childNodes.length; i++) {
+					var node = tbody.childNodes[i] 
+					if (index) {
+						node.childNodes[0].innerText = index++
 					}
-				})
+					if (rowId === node.id) {
+						tempNode = node
+						index = +node.childNodes[0].innerText
+					}
+				}
+				if (tempNode) {
+					tbody.removeChild(tempNode)
+				} 
 			}
 			
 			row.setAttribute('id', rowId)
@@ -72,9 +77,9 @@
 			row.appendChild(tdName)
 			row.appendChild(tdDescription)
 			row.appendChild(tdAction)
-			$tbody.append(row)
-		})
-	})
+			tbody.appendChild(row)
+		})	
+	}
 
 	function getData() {
 		return Object.create([ {
